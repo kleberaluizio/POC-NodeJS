@@ -2,14 +2,14 @@
 
 import Hapi from '@hapi/hapi';
 
-import utilityRoutes from './src/api/utils/utilityRoutes.js';
+import utilityRoutes from './src/api/utils/routes/utilityRoutes.js';
 import userRoutes from './src/api/users/userRoutes.js';
 import carRoutes from './src/api/cars/carRoutes.js';
 import { geoRoute } from './src/api/geo-locate/geoLocateRoutes.js';
 
-import plugins from './src/api/utils/plugins.js'
+import plugins from './src/api/utils/plugins/plugins.js'
 
-const { homePageRoute, wildCardRoute } = utilityRoutes;
+const { homePageRoute, wildCardRoute, dinoRoute, blogRoute } = utilityRoutes;
 
 const init = async () => {
 
@@ -21,6 +21,8 @@ const init = async () => {
     await server.register(plugins);
 
     server.route(homePageRoute);
+    server.route(dinoRoute);
+    server.route(blogRoute);
     server.route(userRoutes);
     server.route(carRoutes);
     server.route(geoRoute);

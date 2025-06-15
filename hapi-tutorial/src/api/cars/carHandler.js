@@ -1,4 +1,4 @@
-import escapeHtml from "../utils/escapeHtml.js";
+import escapeHtml from "../utils/functions/escapeHtml.js";
 
 const describeCar = (request, h) => { //h = ResponseToolik
     let { model, color } = request.query;

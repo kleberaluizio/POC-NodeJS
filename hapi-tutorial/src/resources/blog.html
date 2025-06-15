@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog SPA com Carrossel</title>
+<style>
+  /* Reset básico */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: #004080;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a.active {
+    color: #ff9800;
+  }
+  main {
+    flex-grow: 1;
+    max-width: 1000px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 20px 30px;
+    min-height: 500px;
+  }
+  section {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+  }
+  section.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  /* Carrossel */
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .slide {
+    min-width: 100%;
+    position: relative;
+    user-select: none;
+  }
+  .slide img {
+    width: 100%;
+    border-radius: 12px;
+    vertical-align: middle;
+  }
+  .slide-content {
+    position: absolute;
+    bottom: 25px;
+    left: 30px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    max-width: 70%;
+  }
+  .slide-content h2 {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+  }
+  .slide-content p {
+    font-size: 1rem;
+  }
+  .carousel-buttons {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 15px;
+  }
+  .carousel-buttons button {
+    pointer-events: all;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .carousel-buttons button:hover {
+    background: rgba(0,0,0,0.6);
+  }
+  /* Posts */
+  .posts-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #004080;
+  }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 20px;
+  }
+  .post-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+  }
+  .post-card:hover {
+    transform: translateY(-8px);
+  }
+  .post-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .post-content {
+    padding: 15px 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .post-content h3 {
+    margin-bottom: 10px;
+    color: #004080;
+  }
+  .post-content p {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  .post-content a {
+    margin-top: 15px;
+    color: #ff6f61;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .post-content a:hover {
+    color: #e64c3c;
+  }
+  /* Sobre e Contato simples */
+  #sobre p, #contato p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  /* Footer */
+  footer {
+    background: #004080;
+    color: white;
+    text-align: center;
+    padding: 20px 15px;
+    font-size: 0.9rem;
+  }
+  /* Responsivo */
+  @media (max-width: 600px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    nav {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .slide-content {
+      max-width: 90%;
+      font-size: 0.9rem;
+      left: 15px;
+      bottom: 15px;
+      padding: 10px 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Blog de Aventuras</h1>
+  <nav>
+    <a href="#" data-section="inicio" class="active">Início</a>
+    <a href="#" data-section="sobre">Sobre</a>
+    <a href="#" data-section="contato">Contato</a>
+  </nav>
+</header>
+
+<main>
+  <!-- INÍCIO -->
+  <section id="inicio" class="active">
+    <div class="carousel" aria-label="Carrossel de imagens do blog">
+      <div class="slides">
+        <div class="slide" aria-hidden="false">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80" alt="Montanhas ao pôr do sol" />
+          <div class="slide-content">
+            <h2>Aventuras nas Montanhas</h2>
+            <p>Explore trilhas incríveis e paisagens de tirar o fôlego.</p>
+          </div>
+        </div>
+        <div class="slide" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=80" alt="Viagem pela floresta" />
+          <div class="slide-content">
+            <h2>Viagem pela Floresta</h2>
+            <p>Conheça a fauna e flora selvagens em suas expedições.</p>
+          </div>
+        </div>
+        <div class="slide" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=80" alt="Acampamento sob as estrelas" />
+          <div class="slide-content">
+            <h2>Acampamento Sob as Estrelas</h2>
+            <p>Momentos mágicos na natureza para relaxar e se conectar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-buttons">
+        <button aria-label="Slide anterior" id="prevBtn">&#10094;</button>
+        <button aria-label="Próximo slide" id="nextBtn">&#10095;</button>
+      </div>
+    </div>
+
+    <section class="posts-section" aria-label="Posts recentes do blog" style="margin-top: 40px;">
+      <h2>Posts Recentes</h2>
+      <div class="posts-grid">
+        <article class="post-card">
+          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80" alt="Foto de trilha na montanha" />
+          <div class="post-content">
+            <h3>Como Planejar Sua Primeira Trilha</h3>
+            <p>Dicas essenciais para iniciantes que querem encarar a natureza com segurança.</p>
+            <a href="#">Leia mais</a>
+          </div>
+        </article>
+        <article class="post-card">
+          <img src="https://images.unsplash.com/photo-1508830524289-0adcbe822b40?auto=format&fit=crop&w=600&q=80" alt="Campfire à noite" />
+          <div class="post-content">
+            <h3>O Guia Completo para Acampamento</h3>
+            <p>Equipamentos, técnicas e sugestões para uma noite perfeita ao ar livre.</p>
+            <a href="#">Leia mais</a>
+          </div>
+        </article>
+        <article class="post-card">
+          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80" alt="Céu estrelado na natureza" />
+          <div class="post-content">
+            <h3>Fotografia Noturna na Natureza</h3>
+            <p>Capture a beleza do céu estrelado e transforme suas fotos em arte.</p>
+            <a href="#">Leia mais</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre" aria-label="Sobre o blog">
+    <h2>Sobre Mim</h2>
+    <p>Olá! Eu sou [Seu Nome], um apaixonado por tecnologia, desenvolvimento web e design. Gosto de criar projetos que ajudem as pessoas e também de aprender coisas novas todos os dias.</p>
+    <p>Nas horas vagas, curto ler, viajar e explorar novas culturas.</p>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" aria-label="Contato">
+    <h2>Contato</h2>
+    <p>Quer conversar ou tirar dúvidas? Me envie um email: <a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Blog de Aventuras | Desenvolvido por Você
+</footer>
+
+<script>
+  // Controle SPA
+  const links = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('main > section');
+
+  function setActiveSection(id) {
+    sections.forEach(sec => {
+      if(sec.id === id) {
+        sec.classList.add('active');
+      } else {
+        sec.classList.remove('active');
+      }
+    });
+    links.forEach(link => {
+      if(link.getAttribute('data-section') === id) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.getAttribute('data-section');
+      setActiveSection(target);
+    });
+  });
+
+  // Carrossel
+  const slides = document.querySelector('.slides');
+  const slideItems = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let currentIndex = 0;
+  const totalSlides = slideItems.length;
+
+  function updateCarousel() {
+    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    slideItems.forEach((slide, i) => {
+      slide.setAttribute('aria-hidden', i !== currentIndex);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateCarousel();
+  });
+
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateCarousel();
+  }, 5000);
+
+  updateCarousel();
+</script>
+
+</body>
+</html>

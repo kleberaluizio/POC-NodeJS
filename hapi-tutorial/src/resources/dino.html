@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dinossauros Caindo</title>
+<style>
+  body {
+    margin: 0;
+    background: #222;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 15px rgba(76,175,80,0.6);
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .dino {
+    position: fixed;
+    top: -100px;
+    font-size: 40px;
+    user-select: none;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<button id="dinoBtn">Clique aqui para dinossauros!</button>
+
+<script>
+  const dinoBtn = document.getElementById('dinoBtn');
+
+  // Array de emojis de dinossauros
+  const dinos = ['🦖', '🦕'];
+
+  dinoBtn.addEventListener('click', () => {
+    // Cria 15 dinossauros caindo na tela
+    for(let i = 0; i < 15; i++) {
+      createDino();
+    }
+  });
+
+  function createDino() {
+    const dino = document.createElement('div');
+    dino.classList.add('dino');
+    dino.textContent = dinos[Math.floor(Math.random() * dinos.length)];
+
+    // Posiciona em um lugar aleatório na horizontal
+    dino.style.left = Math.random() * window.innerWidth + 'px';
+
+    // Tempo de queda aleatório entre 3 e 6 segundos
+    const duration = (3 + Math.random() * 3).toFixed(2);
+    dino.style.animationDuration = duration + 's';
+
+    document.body.appendChild(dino);
+
+    // Remove o dino do DOM após a animação acabar
+    dino.addEventListener('animationend', () => {
+      dino.remove();
+    });
+  }
+</script>
+
+</body>
+</html>

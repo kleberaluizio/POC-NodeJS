@@ -1,4 +1,4 @@
-import escapeHtml from "../utils/escapeHtml.js";
+import escapeHtml from "../utils/functions/escapeHtml.js";
 
 export const greetUser = (request, h) => {
     const rawUserName = request.params.username;
