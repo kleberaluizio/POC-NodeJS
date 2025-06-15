@@ -9,7 +9,7 @@ import { geoRoute } from './src/api/geo-locate/geoLocateRoutes.js';
 
 import plugins from './src/api/utils/plugins/plugins.js'
 
-const { homePageRoute, wildCardRoute, dinoRoute, blogRoute } = utilityRoutes;
+const { homePageRoute, wildCardRoute, dinoRoute, blogRoute, downloadRoute } = utilityRoutes;
 
 const init = async () => {
 
@@ -26,8 +26,9 @@ const init = async () => {
     server.route(userRoutes);
     server.route(carRoutes);
     server.route(geoRoute);
+    server.route(downloadRoute);
     server.route(wildCardRoute);
-
+    
     await server.start();
     console.log(`Started a Hapi HTTP server on: ${server.info.uri}`);
 }

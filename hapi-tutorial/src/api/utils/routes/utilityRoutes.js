@@ -30,11 +30,22 @@ const blogRoute = {
     handler: (request, h) => {
         return h.file('blog.html');
     },
-    options: {
+    options: { // Outra forma de especificar o caminho
         files: {
             relativeTo: Path.resolve('src/resources')
         }
     }
 };
 
-export default { homePageRoute, wildCardRoute, dinoRoute, blogRoute };
+const downloadRoute = {
+    method: 'GET',
+    path: '/download', 
+    handler: (request, h) => { // Exemplo para realizar o download de arquivos estáticos
+        return h.file(Path.resolve('src/resources/dino.html'), {
+            mode: 'attachment',
+            fileName: 'dino-download.html'
+        });
+    }
+};
+
+export default { homePageRoute, wildCardRoute, dinoRoute, blogRoute, downloadRoute };
