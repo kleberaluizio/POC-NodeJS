@@ -1,11 +1,13 @@
 'user strict';
 
 import Hapi from '@hapi/hapi';
-import hapiGeolocate from 'hapi-geo-locate';
-import utilityRoutes from './src/utils/utilityRoutes.js';
-import userRoutes from './src/users/userRoutes.js';
-import carRoutes from './src/cars/carRoutes.js';
-import { geoRoute } from './src/geo-locate/geoLocateRoutes.js';
+
+import utilityRoutes from './src/api/utils/utilityRoutes.js';
+import userRoutes from './src/api/users/userRoutes.js';
+import carRoutes from './src/api/cars/carRoutes.js';
+import { geoRoute } from './src/api/geo-locate/geoLocateRoutes.js';
+
+import plugins from './src/api/utils/plugins.js'
 
 const { homePageRoute, wildCardRoute } = utilityRoutes;
 
@@ -16,19 +18,13 @@ const init = async () => {
         port: 1234
     });
 
-    await server.register({
-        plugin: hapiGeolocate,
-        options: {
-            enabledByDefault: false
-        }
-    });
+    await server.register(plugins);
 
     server.route(homePageRoute);
-    server.route(wildCardRoute);
     server.route(userRoutes);
     server.route(carRoutes);
     server.route(geoRoute);
-
+    server.route(wildCardRoute);
 
     await server.start();
     console.log(`Started a Hapi HTTP server on: ${server.info.uri}`);
